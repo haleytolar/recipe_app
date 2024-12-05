@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe List</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: #fff; 
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            color: #fff; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); 
+        }
+
+        ul {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            background-color: rgba(255, 255, 255, 0.9); 
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
+            transition: all 0.3s ease-in-out;
+        }
+
+        li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.6); 
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .recipe-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .recipe-info p {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333; 
+            margin-top: 10px;
+        }
+
+    
+    </style>
+</head>
+<body>
+    <h1>Recipe List</h1>
+    <ul>
+        {% for recipe in recipes %}
+        <li>
+            <a href="{% url 'recipes:recipe_detail' recipe.id %}">
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
+                <div class="recipe-info">
+                    <p>{{ recipe.name }}</p>
+                </div>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
