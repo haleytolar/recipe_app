@@ -11,69 +11,78 @@
             background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
             background-size: cover;
             color: #333; 
-            padding: 20px;
+            padding: 0;
             margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* Ensure the page takes the full viewport height */
         }
 
         .content {
-            max-width: 800px;
-            margin: 0 auto;
+            max-width: 600px; /* Fixed max-width for the content box */
+            width: 100%;
             padding: 20px;
             background-color: rgba(255, 255, 255, 0.9); 
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
             color: #333; 
+            text-align: center;
+            height: auto; /* Adjust height based on content */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between; /* Space out the content evenly */
         }
 
         h1 {
-            text-align: center;
             color: #333; 
             text-shadow: none; 
+            font-size: 1.8rem; /* Reduced font size */
+            margin-bottom: 15px;
         }
 
         img {
             display: block;
-            max-width: 400px; 
-            width: 100%; 
+            width: 80%; /* Make the image smaller */
+            max-width: 250px; /* Restrict maximum width */
             height: auto; 
             margin: 0 auto 20px; 
             border-radius: 10px;
         }
 
         .details {
-            margin-top: 20px;
+            margin-top: 15px;
+            font-size: 1rem;
         }
 
         p {
-            font-size: 1.2rem;
-            line-height: 1.6;
+            line-height: 1.4;
+            margin-bottom: 8px;
         }
 
-        
         strong {
-            color: #007BFF; 
+            color: #ff4d4d; 
         }
 
         .back-button {
             display: inline-block;
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #007BFF; 
+            margin-top: 15px; 
+            padding: 6px 12px; /* Smaller padding for the button */
+            background-color: #ff4d4d; 
             color: #fff; 
             text-decoration: none;
             border-radius: 5px;
-            font-size: 1rem;
+            font-size: 0.9rem;
             text-align: center;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
             transition: background-color 0.3s ease;
+            max-width: 150px; /* Set a max width for the button */
+            width: 100%; /* Allow the button to take up the full width of its container but limit the width */
+            margin: 0 auto; /* Center the button */
         }
 
         .back-button:hover {
-            background-color: #0056b3; 
-        }
-
-        .back-button:active {
-            background-color: #003f7f; 
+            background-color: #e63939; 
         }
     </style>
 </head>
@@ -91,3 +100,6 @@
     </div>
 </body>
 </html>
+
+
+

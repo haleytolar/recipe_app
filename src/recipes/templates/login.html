@@ -1,0 +1,121 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Script&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: #fff; /* White background */
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            font-family: 'League Script', cursive; /* Cute cursive font */
+            font-size: 3rem; /* Increased font size */
+            margin-bottom: 20px;
+            color: #000; /* Black text */
+            text-shadow: 0.5px 0.5px 1px rgba(0, 0, 0, 0.3); /* Simulate boldness */
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        form p {
+            text-align: left;
+            margin-bottom: 10px;
+            font-size: 1rem;
+            color: #000; /* Black text */
+        }
+
+        form input[type="text"],
+        form input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc; /* Slight border for inputs */
+            outline: none;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            background-color: #d9534f; /* Red button */
+            color: white;
+            padding: 15px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        button:hover {
+            background-color: #c9302c; /* Darker red on hover */
+            transform: scale(1.05);
+        }
+
+        .register-link {
+            display: inline-block;
+            margin-top: 15px;
+            color: #d9534f; /* Red register link */
+            text-decoration: none;
+        }
+
+        .register-link:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            form p {
+                font-size: 0.9rem;
+            }
+
+            button {
+                padding: 12px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <h1>Login to Recipe App</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</body>
+</html>
