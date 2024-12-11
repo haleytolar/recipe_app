@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe List</title>
-    <!-- Add the Google Fonts link -->
     <link href="https://fonts.googleapis.com/css2?family=League+Script&display=swap" rel="stylesheet">
     <style>
         body {
@@ -38,13 +37,13 @@
         }
 
         li {
-            background-color: rgba(255, 255, 255, 0.8); /* Light background color */
+            background-color: rgba(255, 255, 255, 0.8); 
             overflow: hidden;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* Soft shadow */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); 
             transition: all 0.3s ease-in-out;
-            width: 250px; /* Fixed width for boxes */
-            height: 300px; /* Fixed height for boxes */
-            border-radius: 20px; /* Rounded corners for a soft look */
+            width: 250px; 
+            height: 300px; 
+            border-radius: 20px; 
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -56,8 +55,8 @@
         }
 
         li:hover {
-            transform: translateY(-10px); /* Slight lift on hover */
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5); /* Stronger shadow on hover */
+            transform: translateY(-10px); 
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5); 
         }
 
         a {
@@ -70,9 +69,9 @@
 
         img {
             width: 200px;
-            height: 200px; /* Fixed height for uniformity */
-            object-fit: cover; /* Ensures images are properly scaled */
-            border-radius: 10px; /* Slight rounding of image corners */
+            height: 200px; 
+            object-fit: cover; 
+            border-radius: 10px; 
             margin-bottom: 15px;
         }
 
@@ -87,7 +86,7 @@
             margin-top: 10px;
         }
 
-        /* Logout button styles */
+       
         .logout-container {
             position: absolute;
             top: 10px;
@@ -112,10 +111,13 @@
 </head>
 <body>
     <div class="logout-container">
-        <form method="post" action="{% url 'recipes:logout' %}">
+        <form method="post" action="{% url 'recipes:logout' %}" style="display: inline;">
             {% csrf_token %}
             <button type="submit" class="logout-button">Logout</button>
         </form>
+        <form method="get" action="{% url 'recipes:search_recipes' %}" style="display: inline;">
+            <button type="submit" class="logout-button">Search</button>
+        </form>               
     </div>
     <h1>Recipe List</h1>
     <ul>

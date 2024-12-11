@@ -1,0 +1,217 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe List</title>
+    <link href="https://fonts.googleapis.com/css2?family=League+Script&display=swap" rel="stylesheet">
+    <style>
+        
+body {
+    font-family: 'Arial', sans-serif;
+    background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+    background-size: cover;
+    color: #fff;
+    padding: 20px;
+    margin: 0;
+}
+
+h1, h2 {
+    font-family: 'League Script', cursive;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 2.5rem;
+    color: #fff;
+    text-shadow: 
+        2px 2px 6px rgba(255, 255, 255, 0.8),
+        -2px -2px 4px rgba(0, 0, 0, 0.8),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+
+.content-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+
+.left-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+
+.right-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+
+form {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+button:hover {
+    background-color: #c9302c;
+    transform: scale(1.05);
+}
+
+
+ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    list-style-type: none;
+    padding: 0;
+}
+
+li {
+    background-color: #fff; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    transition: transform 0.3s, box-shadow 0.3s;
+    text-decoration: none;
+    width: 220px; 
+    height: 300px; 
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    align-items: center;
+    padding: 15px;
+}
+
+a {
+    text-decoration: none;
+}
+
+li:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
+}
+
+img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover; 
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.recipe-info {
+    text-align: center;
+    color: #333;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+
+.chart-container {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.chart-container img {
+    max-width: 100%;
+    width: 90%; 
+    height: auto; 
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+}
+
+
+.logout-container {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    display: flex;
+    gap: 10px; 
+    justify-content: center;
+    align-items: center;
+}
+
+
+.logout-button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.logout-button:hover {
+    background-color: #e63939;
+    transform: scale(1.05);
+}
+
+    </style>
+</head>
+<body>
+   
+    <div class="logout-container">
+        <form method="get" action="{% url 'recipes:recipe_list' %}" style="display: inline;">
+            <button type="submit" class="logout-button">Back to Recipe List</button>
+        </form>
+        <form method="post" action="{% url 'recipes:logout' %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit" class="logout-button">Logout</button>
+        </form>
+    </div>
+
+    
+    <h1>Recipe Search</h1>
+    
+   
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Search</button>
+    </form>
+
+
+    <div class="content-container">
+        
+        <div class="left-content">
+            <h2>Search Results</h2>
+            <ul>
+                {% for recipe in recipes %}
+                <li>
+                    <a href="{% url 'recipes:recipe_detail' recipe.id %}">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
+                        <div class="recipe-info">
+                            <p>{{ recipe.name }}</p>
+                            <p>{{ recipe.cooking_time }} minutes</p>
+                        </div>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+
+        
+        <div class="right-content">
+            {% if chart %}
+            <div class="chart-container">
+                <h2>Chart</h2>
+                <img src="data:image/png;base64,{{ chart }}" alt="Chart">
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
