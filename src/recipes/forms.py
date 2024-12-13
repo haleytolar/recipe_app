@@ -40,3 +40,4 @@ class RecipeSearchForm(forms.Form):
         widget=forms.Select(attrs={"class": "form-control"}),
         label="Chart Type"
     )
+

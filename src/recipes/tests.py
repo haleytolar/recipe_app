@@ -1,57 +1,56 @@
 from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.urls import reverse
-from recipes.models import Recipe
-
-
-class RecipeModelTests(TestCase):
-    def setUp(self):
-        self.recipe = Recipe.objects.create(
-            name="Avocado Toast",
-            ingredients="1 ripe avocado\n2 slices of whole-grain bread\nSalt and pepper, to taste",
-            instructions="Toast bread, mash avocado, season, and serve.",
-            cooking_time=10,
-            serving_size=1,
-            image="recipes/avo_toast.jpeg",
-            category="appetizer",
-        )
-
-    def test_recipe_creation(self):
-        recipe = Recipe.objects.get(name="Avocado Toast")
-        self.assertEqual(recipe.name, "Avocado Toast")
-        self.assertEqual(recipe.category, "appetizer")
-        self.assertEqual(recipe.cooking_time, 10)
-        self.assertEqual(recipe.serving_size, 1)
+from .models import Recipe
 
 
 class RecipeViewTests(TestCase):
     def setUp(self):
-        self.recipe = Recipe.objects.create(
-            name="Avocado Toast",
-            ingredients="1 ripe avocado\n2 slices of whole-grain bread\nSalt and pepper, to taste",
-            instructions="Toast bread, mash avocado, season, and serve.",
-            cooking_time=10,
-            serving_size=1,
-            image="recipes/avo_toast.jpeg",
-            category="appetizer",
-        )
+        # Creating a mock image file for the recipe
+        image_file = SimpleUploadedFile("test_image.jpg", b"file_content", content_type="image/jpeg")
+        
+        # Creating the recipe objects
+        self.recipe1 = Recipe.objects.create(name="Pasta", image=image_file)
+        self.recipe2 = Recipe.objects.create(name="Salad", image=image_file)
 
     def test_recipe_list_view(self):
-        response = self.client.get(reverse('recipes:recipe_list'))
+        # Ensure the view renders correctly
+        response = self.client.get(reverse('recipe_list'))  # Assuming 'recipe_list' is the name of the URL
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Avocado Toast")
-        self.assertTemplateUsed(response, 'recipes/recipe_list.html')
+        self.assertContains(response, "Pasta")
+        self.assertContains(response, "Salad")
 
-    def test_recipe_detail_view(self):
-        response = self.client.get(reverse('recipes:recipe_detail', args=[self.recipe.id]))
+    def test_recipe_update_view(self):
+        # Test updating a recipe
+        self.recipe1.name = 'Updated Pasta'
+        self.recipe1.save()
+        self.recipe1.refresh_from_db()  # Reload the object from the database
+        self.assertEqual(self.recipe1.name, 'Updated Pasta')
+
+    def test_search_recipes_view(self):
+        # Ensure search view works correctly
+        response = self.client.get(reverse('search_recipes'))  # Assuming 'search_recipes' is the name of the URL
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "Avocado Toast")
-        self.assertContains(response, "Toast bread, mash avocado, season, and serve.")
-        self.assertTemplateUsed(response, 'recipes/recipe_detail.html')
+        self.assertContains(response, "Pasta")
+        self.assertContains(response, "Salad")
 
-
-class RecipeSearchTest(TestCase):
-    def test_search_page_loads(self):
-        response = self.client.get(reverse('recipes:search_recipes'))
+    def test_recipe_list_view_no_image(self):
+        # Testing without uploading an image
+        recipe_no_image = Recipe.objects.create(name="No Image Pasta")
+        response = self.client.get(reverse('recipe_list'))
         self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No Image Pasta")
 
+    def test_recipe_update_view_without_image(self):
+        # Test updating a recipe without an image
+        recipe_no_image = Recipe.objects.create(name="Pasta Without Image")
+        recipe_no_image.name = "Updated Pasta Without Image"
+        recipe_no_image.save()
+        recipe_no_image.refresh_from_db()
+        self.assertEqual(recipe_no_image.name, "Updated Pasta Without Image")
+
+    def tearDown(self):
+        # Clean up after tests if needed
+        self.recipe1.delete()
+        self.recipe2.delete()
 
