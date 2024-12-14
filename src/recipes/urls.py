@@ -10,7 +10,7 @@ from .views import (
 app_name = 'recipes'
 
 urlpatterns = [
-    path('', home, name='home'),
+     path('', RecipeLoginView.as_view(), name='login'),  
     path('recipes/', recipe_list, name='recipe_list'),
     path('recipes/<int:recipe_id>/', recipe_detail, name='recipe_detail'),
     path('login/', RecipeLoginView.as_view(), name='login'),
@@ -19,3 +19,6 @@ urlpatterns = [
     path('add-recipe/', add_recipe, name='add_recipe'),
     path('about-me/', about_me, name='about_me'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

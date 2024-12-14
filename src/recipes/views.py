@@ -128,7 +128,6 @@ def get_chart(chart_type, data):
 
 
 
-@login_required
 def add_recipe(request):
     if request.method == 'POST':
         form = AddRecipeForm(request.POST, request.FILES)
