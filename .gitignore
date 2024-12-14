@@ -21,3 +21,6 @@ env/
 # IDE specific
 .idea/
 .vscode/
+
+#src/recipe_project/settings.py
+src/recipe_project/settings.py
