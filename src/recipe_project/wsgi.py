@@ -1,16 +1,13 @@
-"""
-WSGI config for recipe_project project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
-"""
-
 import os
+import sys
+
+# Add the 'src' directory to the Python path
+sys.path.append(os.path.join(os.path.dirname(__file__), 'src'))
 
 from django.core.wsgi import get_wsgi_application
 
+# Set the default settings module for Django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'recipe_project.settings')
 
+# Create the WSGI application
 application = get_wsgi_application()
