@@ -16,7 +16,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY','django-insecure-ml49cp(e)=yakpe
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'https://recipe-app-19eh.onrender.com'] 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'recipe-app-19eh.onrender.com'] 
 
 
 # Application definition
