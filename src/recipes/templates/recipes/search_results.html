@@ -4,183 +4,501 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe List</title>
-    <link href="https://fonts.googleapis.com/css2?family=League+Script&display=swap" rel="stylesheet">
+    <title>Recipe Search</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Tangerine:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
-            background-size: cover;
-            color: #fff;
-            padding: 20px;
+        :root {
+            --gold: #c8a97e;
+            --gold-light: #e4d5b7;
+            --navy: #1a2639;
+            --cream: #f8f5f0;
+            --burgundy: #722F37;
+            --soft-black: #1a1a1a;
+        }
+        
+        * {
             margin: 0;
-        }
-
-        h1, h2 {
-            font-family: 'League Script', cursive;
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 3.5rem;
-            color: #fff;
-            text-shadow: 
-                2px 2px 6px rgba(255, 255, 255, 0.8),
-                -2px -2px 4px rgba(0, 0, 0, 0.8),
-                2px 2px 4px rgba(0, 0, 0, 0.8);
-        }
-
-        .content-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 20px;
-        }
-
-        .left-content {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .right-content {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        form {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        button {
-            background-color: #ff4d4d;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        button:hover {
-            background-color: #c9302c;
-            transform: scale(1.05);
-        }
-
-        ul {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
-            list-style-type: none;
             padding: 0;
+            box-sizing: border-box;
         }
-
-        li {
-            background-color: #fff; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-            transition: transform 0.3s, box-shadow 0.3s;
-            text-decoration: none;
-            width: 220px; 
-            height: 300px; 
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between; 
-            align-items: center;
-            padding: 15px;
+        
+        body {
+            font-family: 'Lora', serif;
+            background: linear-gradient(rgba(26, 38, 57, 0.8), rgba(26, 38, 57, 0.8)), 
+                        url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: var(--cream);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding-bottom: 50px;
         }
-
-        a {
-            text-decoration: none;
-        }
-
-        li:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover; 
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .recipe-info {
-            text-align: center;
-            color: #333;
-            font-size: 1.1rem;
-            font-weight: bold;
-        }
-
-        .chart-container {
-            text-align: center;
-            margin-top: 30px;
-        }
-
-        .chart-container img {
-            max-width: 100%;
-            width: 90%; 
-            height: auto; 
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-        }
+        
 
         .navbar {
             position: absolute;
-            top: 10px;
-            right: 20px;
+            top: 20px;
+            right: 40px;
+            z-index: 100;
         }
-
+        
         .dropdown {
             position: relative;
             display: inline-block;
         }
-
+        
         .dropdown-button {
-            background-color: #ff4d4d;
+            background-color: var(--burgundy);
             color: white;
-            padding: 10px 15px;
+            font-family: 'Cormorant Garamond', serif;
             font-size: 1rem;
+            padding: 12px 25px;
             border: none;
-            border-radius: 5px;
+            border-radius: 0;
             cursor: pointer;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
-
+        
+        .dropdown-button:hover {
+            background-color: #5e262c;
+        }
+        
         .dropdown-content {
             display: none;
             position: absolute;
             right: 0;
-            background-color: #f9f9f9;
-            min-width: 160px;
-            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
-            z-index: 1;
-            border-radius: 5px;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            z-index: 100;
         }
-
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .dropdown-content form {
             margin: 0;
         }
-
+        
         .dropdown-content button {
             background: none;
             border: none;
-            color: black;
-            padding: 10px 15px;
+            color: var(--soft-black);
+            padding: 15px 20px;
             text-align: left;
             width: 100%;
             cursor: pointer;
+            font-family: 'Cormorant Garamond', serif;
             font-size: 1rem;
+            transition: all 0.2s;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
-
+        
         .dropdown-content button:hover {
-            background-color: #ddd;
+            background-color: #f5f5f5;
+            color: var(--burgundy);
         }
+        
 
-        /* Display dropdown content when hovered */
-        .dropdown:hover .dropdown-content {
+        .page-title {
+            text-align: center;
+            padding: 100px 20px 50px;
+            position: relative;
+        }
+        
+        .page-title h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .page-title .subtitle {
+            font-family: 'Tangerine', cursive;
+            font-size: 3.5rem;
+            color: var(--gold);
+            line-height: 1;
+        }
+        
+
+        .search-form-container {
+            max-width: 800px;
+            margin: 0 auto 60px;
+            padding: 30px 40px;
+            background-color: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .search-form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid var(--gold-light);
+            pointer-events: none;
+        }
+        
+        .search-form {
+            width: 100%;
+        }
+        
+        .search-form p {
+            margin-bottom: 20px;
+        }
+        
+        .search-form label {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--navy);
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .search-form input, .search-form select {
+            font-family: 'Lora', serif;
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            background-color: white;
+            color: var(--soft-black);
+            transition: all 0.3s;
+        }
+        
+        .search-form input:focus, .search-form select:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 8px rgba(200, 169, 126, 0.4);
+        }
+        
+        .search-btn {
+            background-color: var(--burgundy);
+            color: white;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            padding: 12px 30px;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            display: block;
+            margin: 30px auto 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .search-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .search-btn:hover::before {
+            left: 100%;
+        }
+        
+        .search-btn:hover {
+            background-color: #5e262c;
+        }
+        
+
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            padding: 0 20px;
+        }
+        
+        .search-results {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .chart-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--cream);
+            margin-bottom: 25px;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 2px;
+            background-color: var(--gold);
+        }
+        
+
+        .recipe-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+            margin-top: 20px;
+        }
+        
+        .recipe-item {
+            background-color: white;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.4s ease;
+            height: 100%;
+        }
+        
+        .recipe-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid var(--gold-light);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: 1;
+        }
+        
+        .recipe-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+        }
+        
+        .recipe-item:hover::before {
+            opacity: 1;
+        }
+        
+        .recipe-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+        }
+        
+        .recipe-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.8s ease;
+        }
+        
+        .recipe-item:hover .recipe-image {
+            transform: scale(1.05);
+        }
+        
+        .recipe-details {
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .recipe-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 5px;
+        }
+        
+        .recipe-time {
+            color: var(--burgundy);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+
+        .chart-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+        
+        .chart-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid var(--gold-light);
+            pointer-events: none;
+        }
+        
+        .chart-image {
+            width: 100%;
+            height: auto;
             display: block;
         }
+        
 
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            margin-top: 20px;
+        }
+        
+        .empty-state-icon {
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 15px;
+            opacity: 0.7;
+        }
+        
+        .empty-state-text {
+            font-size: 1.2rem;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--cream);
+            font-style: italic;
+        }
+        
+
+        .back-button-container {
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background-color: var(--burgundy);
+            color: white;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            padding: 12px 25px;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            transition: all 0.3s;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .back-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.7s ease;
+        }
+        
+        .back-button:hover::before {
+            left: 100%;
+        }
+        
+        .back-button:hover {
+            background-color: #5e262c;
+        }
+        
+        /* mobile */
+        @media (max-width: 992px) {
+            .search-form-container {
+                padding: 25px;
+                margin: 0 20px 40px;
+            }
+            
+            .content-container {
+                flex-direction: column;
+            }
+            
+            .search-results, .chart-section {
+                width: 100%;
+            }
+            
+            .chart-container {
+                max-width: 100%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .page-title {
+                padding: 80px 20px 40px;
+            }
+            
+            .page-title h1 {
+                font-size: 2.5rem;
+            }
+            
+            .page-title .subtitle {
+                font-size: 2.5rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .recipe-grid {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 20px;
+            }
+            
+            .navbar {
+                top: 10px;
+                right: 20px;
+            }
+            
+            .dropdown-button {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -189,10 +507,10 @@
             <button class="dropdown-button">Menu</button>
             <div class="dropdown-content">
                 <form method="get" action="{% url 'recipes:recipe_list' %}">
-                    <button type="submit">Back to recipes</button>
+                    <button type="submit">Back to Recipes</button>
                 </form>
                 <form method="get" action="{% url 'recipes:add_recipe' %}">
-                    <button type="submit">Add Recipe</button> <!-- New Add Recipe button -->
+                    <button type="submit">Add Recipe</button>
                 </form>
                 <form method="get" action="{% url 'recipes:about_me' %}">
                     <button type="submit">About Me</button>
@@ -204,45 +522,62 @@
             </div>
         </div>
     </div>
-
-    <h1>Recipe Search</h1>
     
-    <form method="get">
-        {{ form.as_p }}
-        <button type="submit">Search</button>
-    </form>
-
+    <div class="page-title">
+        <div class="subtitle"> Search</div>
+    </div>
+    
+    <div class="search-form-container">
+        <form method="get" class="search-form">
+            {{ form.as_p }}
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+    
     <div class="content-container">
-        {% if recipes %}
-        <div class="left-content">
-            <h2>Search Results</h2>
-            <ul>
+        <div class="search-results">
+            {% if recipes %}
+            <div class="page-title">
+                <div class="subtitle">Results</div>
+            </div>
+            <div class="recipe-grid">
                 {% for recipe in recipes %}
-                    <li>
-                        <a href="{% url 'recipes:recipe_detail' recipe.id %}">
-                            <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}">
-                            <div class="recipe-info">
-                                <p>{{ recipe.name }}</p>
-                                <p>{{ recipe.cooking_time }} minutes</p>
+                <article class="recipe-item">
+                    <a href="{% url 'recipes:recipe_detail' recipe.id %}" class="recipe-link">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.name }}" class="recipe-image">
+                        <div class="recipe-details">
+                            <h3 class="recipe-name">{{ recipe.name }}</h3>
+                            <div class="recipe-time">
+                                <i class="far fa-clock"></i>
+                                <span>{{ recipe.cooking_time }} min</span>
                             </div>
-                        </a>
-                    </li>
+                        </div>
+                    </a>
+                </article>
                 {% endfor %}
-            </ul>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-state-icon">
+                    <i class="fas fa-search"></i>
+                </div>
+                <p class="empty-state-text">No recipes found matching your search criteria.</p>
+            </div>
+            {% endif %}
         </div>
-    {% else %}
-        <p>No recipes found.</p>
-    {% endif %}
+        
+        {% if chart %}
+        <div class="chart-section">
+            <h2 class="section-title">Recipe Analysis</h2>
+            <div class="chart-container">
+                <img src="data:image/png;base64,{{ chart }}" alt="Recipe Chart" class="chart-image">
+            </div>
+        </div>
+        {% endif %}
+    </div>
     
-    {% if chart %}
-        <div class="chart-container">
-            <h2>Chart</h2>
-            <img src="data:image/png;base64,{{ chart }}" alt="Chart">
-        </div>
-    {% endif %}
-    
-           
-        </div>
+    <div class="back-button-container">
+        <a href="{% url 'recipes:recipe_list' %}" class="back-button">Back to Recipes</a>
     </div>
 </body>
 </html>

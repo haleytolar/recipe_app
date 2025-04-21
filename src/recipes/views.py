@@ -10,6 +10,9 @@ from .models import Recipe
 from .forms import RecipeSearchForm
 from .forms_add_recipe import AddRecipeForm
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.urls import reverse_lazy
+from django.views.generic.edit import CreateView
 
 
 def home(request):
@@ -142,3 +145,8 @@ def add_recipe(request):
 
 def about_me(request):
     return render(request, 'recipes/about_me.html')
+
+class RegisterView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy('recipes:login')
+    template_name = 'register.html'

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Create Account</title>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Tangerine:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <style>
@@ -36,16 +36,16 @@
             padding: 20px;
         }
         
-        .login-container {
+        .signup-container {
             background-color: white;
             width: 100%;
-            max-width: 450px;
+            max-width: 500px;
             padding: 40px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
             position: relative;
         }
         
-        .login-container::before {
+        .signup-container::before {
             content: '';
             position: absolute;
             top: 0;
@@ -75,7 +75,7 @@
             line-height: 1;
         }
         
-        .login-form label {
+        .signup-form label {
             font-family: 'Cormorant Garamond', serif;
             font-size: 1.2rem;
             font-weight: 600;
@@ -85,7 +85,7 @@
             text-align: left;
         }
         
-        .login-form input {
+        .signup-form input {
             font-family: 'Lora', serif;
             width: 100%;
             padding: 12px 15px;
@@ -97,13 +97,13 @@
             font-size: 1rem;
         }
         
-        .login-form input:focus {
+        .signup-form input:focus {
             outline: none;
             border-color: var(--gold);
             box-shadow: 0 0 8px rgba(200, 169, 126, 0.4);
         }
         
-        .login-button {
+        .signup-button {
             background-color: var(--burgundy);
             color: white;
             font-family: 'Cormorant Garamond', serif;
@@ -121,7 +121,7 @@
             overflow: hidden;
         }
         
-        .login-button::before {
+        .signup-button::before {
             content: '';
             position: absolute;
             top: 0;
@@ -132,15 +132,15 @@
             transition: left 0.7s ease;
         }
         
-        .login-button:hover::before {
+        .signup-button:hover::before {
             left: 100%;
         }
         
-        .login-button:hover {
+        .signup-button:hover {
             background-color: #5e262c;
         }
         
-        .register-link {
+        .login-link {
             display: block;
             text-align: center;
             margin-top: 20px;
@@ -151,12 +151,11 @@
             transition: color 0.3s;
         }
         
-        .register-link:hover {
+        .login-link:hover {
             color: #5e262c;
             text-decoration: underline;
         }
         
-
         .corner-decoration {
             position: absolute;
             width: 60px;
@@ -192,7 +191,7 @@
             background-size: 15px 15px;
         }
         
-        /* error messages */
+        /* error messages and helper texts */
         .errorlist {
             color: var(--burgundy);
             font-size: 0.9rem;
@@ -211,7 +210,7 @@
         
         /* mobile */
         @media (max-width: 500px) {
-            .login-container {
+            .signup-container {
                 padding: 30px 20px;
             }
             
@@ -226,22 +225,66 @@
     </style>
 </head>
 <body>
-    <div class="login-container">
+    <div class="signup-container">
         <div class="corner-decoration"></div>
         <div class="corner-decoration"></div>
         <div class="corner-decoration"></div>
         <div class="corner-decoration"></div>
         
-        <h1 class="page-title">Login</h1>
-        <div class="subtitle">Welcome Back</div>
+        <h1 class="page-title">Create Account</h1>
+        <div class="subtitle">Join Our Collection</div>
         
-        <form method="post" class="login-form">
+        <form method="post" class="signup-form" id="signupForm">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit" class="login-button">Sign In</button>
+            <button type="submit" class="signup-button">Sign Up</button>
         </form>
         
-        <a href="{% url 'recipes:register' %}" class="register-link">Don't have an account? Register here</a>
+        <a href="{% url 'recipes:login' %}" class="login-link">Already have an account? Log in</a>
     </div>
+
+    <script>
+       
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const form = document.getElementById('signupForm');
+            const usernameField = document.getElementById('id_username');
+            const password1Field = document.getElementById('id_password1');
+            const password2Field = document.getElementById('id_password2');
+            
+
+            const helpTexts = document.querySelectorAll('.helptext');
+            helpTexts.forEach(helpText => {
+
+                if (helpText.textContent.includes('password')) {
+                    helpText.innerHTML = 'Choose a password you\'ll remember.';
+                }
+
+                if (helpText.textContent.includes('username')) {
+                    helpText.innerHTML = 'Letters, digits, and @/./+/-/_ only.';
+                }
+            });
+            
+
+            form.addEventListener('submit', function(e) {
+           
+            });
+            
+  
+            if (usernameField) usernameField.removeAttribute('required');
+            if (password1Field) password1Field.removeAttribute('required');
+            if (password2Field) password2Field.removeAttribute('required');
+            
+
+            if (usernameField) usernameField.removeAttribute('pattern');
+            if (password1Field) password1Field.removeAttribute('pattern');
+            if (password2Field) password2Field.removeAttribute('pattern');
+            
+
+            if (usernameField) usernameField.removeAttribute('minlength');
+            if (password1Field) password1Field.removeAttribute('minlength');
+            if (password2Field) password2Field.removeAttribute('minlength');
+        });
+    </script>
 </body>
 </html>

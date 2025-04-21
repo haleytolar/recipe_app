@@ -2,17 +2,18 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import (
-    RecipeLoginView, RecipeLogoutView,
- search_recipes, home, recipe_list, recipe_detail, add_recipe, about_me
+    RecipeLoginView, RecipeLogoutView, search_recipes, 
+    home, recipe_list, recipe_detail, add_recipe, about_me,
+    RegisterView  
 )
-
 
 app_name = 'recipes'
 
 urlpatterns = [
-     path('', RecipeLoginView.as_view(), name='login'),  
+    path('', RecipeLoginView.as_view(), name='login'),
     path('recipes/', recipe_list, name='recipe_list'),
     path('recipes/<int:recipe_id>/', recipe_detail, name='recipe_detail'),
+    path('register/', RegisterView.as_view(), name='register'),  # This is the registration URL
     path('login/', RecipeLoginView.as_view(), name='login'),
     path('logout/', RecipeLogoutView.as_view(), name='logout'),
     path('search/', search_recipes, name='search_recipes'),
@@ -20,5 +21,3 @@ urlpatterns = [
     path('about-me/', about_me, name='about_me'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
